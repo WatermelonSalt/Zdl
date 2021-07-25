@@ -265,13 +265,13 @@ class draw_screen:
 
             for index in range(len(content)):
 
-                enclosed += f"{box_color}{box_chars[0]}{self.term.normal} {content[index].center(self.term.width - len(self.term.strip_seqs(content[index])) + (len(content[index]) - 4), ' ')} {box_color}{box_chars[0]}{self.term.normal}\n"
+                enclosed += f"{box_color}{box_chars[0]}{self.term.normal} {content[index].center(self.term.width - len(self.term.strip_seqs(content[index])) + (len(content[index]) - 4), ' ')}{self.term.normal} {box_color}{box_chars[0]}{self.term.normal}\n"
 
         else:
 
             for index in range(len(content)):
 
-                enclosed += f"{box_color}{box_chars[0]}{self.term.normal} {content[index]}{' '*(self.term.width - len(self.term.strip_seqs(content[index])) - 4)} {box_color}{box_chars[0]}{self.term.normal}\n"
+                enclosed += f"{box_color}{box_chars[0]}{self.term.normal} {content[index]}{' '*(self.term.width - len(self.term.strip_seqs(content[index])) - 4)}{self.term.normal} {box_color}{box_chars[0]}{self.term.normal}\n"
 
         enclosed += f"{box_color}{box_chars[4]}{box_chars[1]*(self.term.width - 2)}{box_chars[5]}{self.term.normal}"
 
@@ -341,11 +341,23 @@ class draw_screen:
 
             if type(content[active]) == list:
 
-                content_disp[active] = f"{self.term.black_on_grey}{content[active][1]}    {content[active][2 + self.active_offset]}{self.term.normal}"
+                content_disp[active] = f"{self.term.black_on_grey}{content[active][1].strip()}  {content[active][2 + self.active_offset].strip()}{self.term.normal}"
 
             else:
 
-                content_disp[active] = f"{self.term.black_on_grey}{content[active]}{self.term.normal}"
+                content_disp[active] = f"{self.term.black_on_grey}{content[active].strip()}{self.term.normal}"
+
+            for index, elem in enumerate(content_disp):
+
+                if len(elem) > self.term.width - 4:
+
+                    if index == active:
+
+                        content_disp[index] = f"{self.term.black_on_grey}" + f"{content[active][1].strip()}  {content[active][2 + self.active_offset].strip()}"[: self.term.width - 4] + f"{self.term.normal}"
+
+                    else:
+
+                        content_disp[index] = content_disp[index][:self.term.width - 4]
 
             self.active_prev = active
 
