@@ -386,22 +386,24 @@ if __name__ == "__main__":
     terminal = Terminal()
     book_processor = process_site_content()
     book_processor.determine_book_dl_site_mirror()
-    update_rate = 1/24
 
     try:
 
         with terminal.hidden_cursor(), terminal.fullscreen():
 
+            update_rate = 1/24
             textbox_active = False
             content = []
             tmp_content = []
             body_content = []
-            pages = 0
+            pages = []
             count = 0
             active_index = 0
             active_len = 0
             offset_index = 0
             offsets = 0
+            active_page = 0
+            head = {"User-Agent": "Mozilla/5.0"}
             wrong_dimensions_message = f"{terminal.red_on_black}Please resize your terminal to a greater size{terminal.normal}"
 
             while True:
@@ -471,33 +473,64 @@ if __name__ == "__main__":
                                 body_content, pages = book_processor.get_book_search_results(
                                     final_str)
 
-                        if input.lower() == "j":
+                        if textbox_active is False:
 
-                            active_index += 1
+                            if input.lower() == "j":
 
-                        if input.lower() == "k":
+                                active_index += 1
 
-                            active_index -= 1
+                            if input.lower() == "k":
 
-                        if active_index >= active_len:
+                                active_index -= 1
 
-                            offset_index += 1
-                            active_index = active_len - 1
+                            if input.lower() == "h":
 
-                        if active_index < 0:
+                                active_page -= 1
 
-                            offset_index -= 1
-                            active_index = 0
+                            if input.lower() == "l":
 
-                        if offset_index < 0:
+                                active_page += 1
 
-                            offset_index = offsets
-                            active_index = active_len - 1
+                            if active_index >= active_len:
 
-                        if offset_index > offsets:
+                                offset_index += 1
+                                active_index = active_len - 1
 
-                            offset_index = 0
-                            active_index = 0
+                            if active_index < 0:
+
+                                offset_index -= 1
+                                active_index = 0
+
+                            if offset_index < 0:
+
+                                offset_index = offsets
+                                active_index = active_len - 1
+
+                            if offset_index > offsets:
+
+                                offset_index = 0
+                                active_index = 0
+
+                            if active_page < 0:
+
+                                active_page = len(pages) - 1
+
+                            if active_page >= len(pages):
+
+                                active_page = 0
+
+                            if input.code == 263:
+
+                                new_soup = BeautifulSoup(
+                                    get(pages[active_page], headers=head).content, "html.parser")
+                                body_content = book_processor.add_books(
+                                    new_soup)
+
+                            if input.code == 343:
+
+                                body_content, pages = book_processor.get_book_search_results(
+                                    final_str)
+                                active_page = 0
 
                     screen.draw_title(
                         f"{terminal.pink}Z-Library Books Downloader{terminal.normal}",
@@ -514,6 +547,19 @@ if __name__ == "__main__":
 
                     active_len, offsets = screen.draw_body(
                         body_content, update_rate=update_rate, box_color=f"{terminal.yellow}", offset=offset_index, active=active_index)
+
+                    with terminal.location(0, terminal.height - 2):
+
+                        for i in range(len(pages)):
+
+                            if i == active_page:
+
+                                print(
+                                    f"{terminal.black_on_white}{i}{terminal.normal}", end=" ")
+
+                            else:
+
+                                print(i, end=" ")
 
                 sleep(update_rate)
 
