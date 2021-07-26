@@ -322,6 +322,8 @@ class draw_screen:
 
             self.active_offset = 0
 
+        orig_content_length = len(content)
+
         with self.term.location(0, 6), self.term.hidden_cursor():
 
             if len(content) < self.term.height - 10:
@@ -375,6 +377,8 @@ class draw_screen:
 
             print(self.enclose_in_box(content_disp, box_color=box_color))
 
+            return (len(content_disp), orig_content_length - len(content_disp))
+
 
 if __name__ == "__main__":
 
@@ -382,7 +386,7 @@ if __name__ == "__main__":
     terminal = Terminal()
     book_processor = process_site_content()
     book_processor.determine_book_dl_site_mirror()
-    update_rate = 1/4
+    update_rate = 1/24
 
     try:
 
@@ -394,6 +398,10 @@ if __name__ == "__main__":
             body_content = []
             pages = 0
             count = 0
+            active_index = 0
+            active_len = 0
+            offset_index = 0
+            offsets = 0
             wrong_dimensions_message = f"{terminal.red_on_black}Please resize your terminal to a greater size{terminal.normal}"
 
             while True:
@@ -461,6 +469,34 @@ if __name__ == "__main__":
                                 body_content, pages = book_processor.get_book_search_results(
                                     final_str)
 
+                        if input.lower() == "j":
+
+                            active_index += 1
+
+                        if input.lower() == "k":
+
+                            active_index -= 1
+
+                        if active_index >= active_len:
+
+                            offset_index += 1
+                            active_index = active_len - 1
+
+                        if active_index < 0:
+
+                            offset_index -= 1
+                            active_index = 0
+
+                        if offset_index < 0:
+
+                            offset_index = offsets
+                            active_index = active_len - 1
+
+                        if offset_index > offsets:
+
+                            offset_index = 0
+                            active_index = 0
+
                     screen.draw_title(
                         f"{terminal.pink}Z-Library Books Downloader{terminal.normal}",
                         box_color=f"{terminal.lightgreen}")
@@ -474,8 +510,8 @@ if __name__ == "__main__":
                         screen.draw_textbox(final_str,
                                             box_color=f"{terminal.magenta}")
 
-                    screen.draw_body(
-                        body_content, update_rate=update_rate, box_color=f"{terminal.yellow}")
+                    active_len, offsets = screen.draw_body(
+                        body_content, update_rate=update_rate, box_color=f"{terminal.yellow}", offset=offset_index, active=active_index)
 
                 sleep(update_rate)
 
