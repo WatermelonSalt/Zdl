@@ -246,6 +246,9 @@ class draw_screen:
         self.active_offset = 0
         self.active_prev = 0
         self.call_count = 0
+        self.offset_str_call_count = 0
+        self.str1_offset = 0
+        self.comp_str1 = ""
 
     def enclose_in_box(self,
                        content: list,
@@ -295,15 +298,21 @@ class draw_screen:
 
         content_disp = []
         self.call_count += 1
+        self.offset_str_call_count += 1
 
-        with self.term.location(0, 0):
-
-            print(f"{self.call_count}  {self.active_offset}")
-
-        if self.call_count == 3*((1/update_rate)/4):
+        if self.call_count >= 3*((1/update_rate)/4):
 
             self.call_count = 0
             self.active_offset += 1
+
+        if self.offset_str_call_count >= (1/update_rate)/4:
+
+            self.offset_str_call_count = 0
+            self.str1_offset += 1
+
+        if self.str1_offset >= len(self.comp_str1) - 49:
+
+            self.str1_offset = 0
 
         if self.active_offset == 5:
 
@@ -353,7 +362,10 @@ class draw_screen:
 
                     if index == active:
 
-                        content_disp[index] = f"{self.term.black_on_grey}" + f"{content[active][1].strip()}  {content[active][2 + self.active_offset].strip()}"[: self.term.width - 4] + f"{self.term.normal}"
+                        self.comp_str1 = content[active][1].strip()
+
+                        content_disp[active] = f"{self.term.black_on_grey}" + f"{content[active][1].strip()[self.str1_offset: self.str1_offset + 50]}  {content[active][2 + self.active_offset].strip()}"[
+                            : self.term.width - 4] + f"{self.term.normal}"
 
                     else:
 
