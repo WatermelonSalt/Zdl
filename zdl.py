@@ -410,7 +410,8 @@ if __name__ == "__main__":
 
                     with terminal.hidden_cursor(), terminal.location(0, terminal.height//2):
 
-                        print(wrong_dimensions_message.center(terminal.width + len(terminal.split_seqs(wrong_dimensions_message)[0]) + 11, " "))
+                        print(wrong_dimensions_message.center(
+                            terminal.width + len(terminal.split_seqs(wrong_dimensions_message)[0]) + 11, " "))
 
                 else:
 
@@ -456,7 +457,8 @@ if __name__ == "__main__":
 
                             if len(content) > terminal.width - 4:
 
-                                needed_length = len(content) - terminal.width + 4
+                                needed_length = len(
+                                    content) - terminal.width + 4
                                 tmp_content = tmp_content[needed_length:]
 
                             for letter in tmp_content:
