@@ -394,79 +394,88 @@ if __name__ == "__main__":
             body_content = []
             pages = 0
             count = 0
+            wrong_dimensions_message = f"{terminal.red_on_black}Please resize your terminal to a greater size{terminal.normal}"
 
             while True:
 
-                with terminal.cbreak(), terminal.location(1, 4):
+                if (terminal.width < 80 or terminal.height < 30) is True:
 
-                    input = terminal.inkey(timeout=0.0)
+                    with terminal.hidden_cursor(), terminal.location(0, terminal.height//2):
 
-                    if input == '\2' and textbox_active is False:
+                        print(wrong_dimensions_message.center(terminal.width + len(terminal.split_seqs(wrong_dimensions_message)[0]) + 11, " "))
 
-                        textbox_active = True
-                        count = 0
+                else:
+
+                    with terminal.cbreak(), terminal.location(1, 4):
+
+                        input = terminal.inkey(timeout=0.0)
+
+                        if input == '\2' and textbox_active is False:
+
+                            textbox_active = True
+                            count = 0
+
+                        if textbox_active is False:
+
+                            content = []
+
+                        if textbox_active is True:
+
+                            if input == '\2' and count == 1:
+
+                                textbox_active = False
+
+                            count = 1
+                            final_str = ""
+
+                            if input.code == 263:
+
+                                try:
+
+                                    content.pop()
+
+                                except IndexError:
+
+                                    pass
+
+                            if input.is_sequence is False and input not in [
+                                    "", "\x14", "\2"
+                            ]:
+
+                                content.append(str(input))
+
+                            tmp_content = content
+
+                            if len(content) > terminal.width - 4:
+
+                                needed_length = len(content) - terminal.width + 4
+                                tmp_content = tmp_content[needed_length:]
+
+                            for letter in tmp_content:
+
+                                final_str += letter
+
+                            if input.code == 343 and textbox_active is True:
+
+                                textbox_active = False
+                                body_content, pages = book_processor.get_book_search_results(
+                                    final_str)
+
+                    screen.draw_title(
+                        f"{terminal.pink}Z-Library Books Downloader{terminal.normal}",
+                        box_color=f"{terminal.lightgreen}")
 
                     if textbox_active is False:
 
-                        content = []
+                        screen.draw_textbox("")
 
                     if textbox_active is True:
 
-                        if input == '\2' and count == 1:
+                        screen.draw_textbox(final_str,
+                                            box_color=f"{terminal.magenta}")
 
-                            textbox_active = False
-
-                        count = 1
-                        final_str = ""
-
-                        if input.code == 263:
-
-                            try:
-
-                                content.pop()
-
-                            except IndexError:
-
-                                pass
-
-                        if input.is_sequence is False and input not in [
-                                "", "\x14", "\2"
-                        ]:
-
-                            content.append(str(input))
-
-                        tmp_content = content
-
-                        if len(content) > terminal.width - 4:
-
-                            needed_length = len(content) - terminal.width + 4
-                            tmp_content = tmp_content[needed_length:]
-
-                        for letter in tmp_content:
-
-                            final_str += letter
-
-                        if input.code == 343 and textbox_active is True:
-
-                            textbox_active = False
-                            body_content, pages = book_processor.get_book_search_results(
-                                final_str)
-
-                screen.draw_title(
-                    f"{terminal.pink}Z-Library Books Downloader{terminal.normal}",
-                    box_color=f"{terminal.lightgreen}")
-
-                if textbox_active is False:
-
-                    screen.draw_textbox("")
-
-                if textbox_active is True:
-
-                    screen.draw_textbox(final_str,
-                                        box_color=f"{terminal.magenta}")
-
-                screen.draw_body(
-                    body_content, update_rate=update_rate, box_color=f"{terminal.yellow}")
+                    screen.draw_body(
+                        body_content, update_rate=update_rate, box_color=f"{terminal.yellow}")
 
                 sleep(update_rate)
 
