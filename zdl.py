@@ -1,4 +1,5 @@
 from time import sleep
+from webbrowser import open as browser_open
 
 from blessed import Terminal
 from bs4 import BeautifulSoup
@@ -234,9 +235,10 @@ class process_site_content:
 
         return (book_list, pages)
 
-    def get_book(self):
+    def get_book(self, body_content, active_element, offset):
 
-        pass
+        book_link = body_content[active_element + offset][0]
+        browser_open(book_link)
 
 
 class draw_screen:
@@ -352,11 +354,11 @@ class draw_screen:
 
             if type(content[active]) == list:
 
-                content_disp[active] = f"{self.term.black_on_grey}{content[active][1].strip()}  {content[active][2 + self.active_offset].strip()}{self.term.normal}"
+                content_disp[active] = f"{self.term.black_on_grey}{content[active][1]}  {content[active][2 + self.active_offset]}{self.term.normal}"
 
             else:
 
-                content_disp[active] = f"{self.term.black_on_grey}{content[active].strip()}{self.term.normal}"
+                content_disp[active] = f"{self.term.black_on_grey}{content[active]}{self.term.normal}"
 
             for index, elem in enumerate(content_disp):
 
@@ -364,9 +366,9 @@ class draw_screen:
 
                     if index == active:
 
-                        self.comp_str1 = content[active][1].strip()
+                        self.comp_str1 = content[active][1]
 
-                        content_disp[active] = f"{self.term.black_on_grey}" + f"{content[active][1].strip()[self.str1_offset: self.str1_offset + 50]}  {content[active][2 + self.active_offset].strip()}"[
+                        content_disp[active] = f"{self.term.black_on_grey}" + f"{content[active][1][self.str1_offset: self.str1_offset + 50]}  {content[active][2 + self.active_offset]}"[
                             : self.term.width - 4] + f"{self.term.normal}"
 
                     else:
@@ -531,6 +533,10 @@ if __name__ == "__main__":
                                 body_content, pages = book_processor.get_book_search_results(
                                     final_str)
                                 active_page = 0
+
+                            if input.code == 512:
+
+                                book_processor.get_book(body_content=body_content, active_element=active_index, offset=offset_index)
 
                     screen.draw_title(
                         f"{terminal.pink}Z-Library Books Downloader{terminal.normal}",
