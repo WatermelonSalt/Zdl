@@ -1,5 +1,6 @@
 from blessed import Terminal
 
+
 class Colors:
 
     term = Terminal()

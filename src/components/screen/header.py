@@ -1,6 +1,8 @@
-from boxer import enclose_in_box
 from blessed import Terminal
+
+from boxer import enclose_in_box
 from colors import Colors
+
 
 class Header:
 
@@ -15,6 +17,7 @@ class Header:
 
             with self.term.hidden_cursor():
 
-                print(enclose_in_box(content, color=self.colors.header_color, title=True))
+                print(enclose_in_box(
+                    content, color=self.colors.header_color, title=True))
 
         return None

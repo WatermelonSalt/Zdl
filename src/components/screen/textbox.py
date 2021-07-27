@@ -1,6 +1,8 @@
-from boxer import enclose_in_box
 from blessed import Terminal
+
+from boxer import enclose_in_box
 from colors import Colors
+
 
 class TextBox:
 
@@ -15,7 +17,8 @@ class TextBox:
 
             with self.term.hidden_cursor():
 
-                print(enclose_in_box(content, color=self.colors.textbox_active_color, title_str="Active"))
+                print(enclose_in_box(
+                    content, color=self.colors.textbox_active_color, title_str="Active"))
 
         return None
 
@@ -25,4 +28,5 @@ class TextBox:
 
             with self.term.hidden_cursor():
 
-                print(enclose_in_box("", color=self.colors.textbox_inactive_color, title_str="Inactive"))
+                print(enclose_in_box(
+                    "", color=self.colors.textbox_inactive_color, title_str="Inactive"))

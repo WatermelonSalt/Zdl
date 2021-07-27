@@ -1,4 +1,5 @@
 from blessed import Terminal
+
 from boxer import enclose_in_box
 from colors import Colors
 
@@ -16,7 +17,7 @@ class Body:
         self.str1_offset = 0
         self.comp_str1 = ""
 
-    def draw_body(self, x: int, y :int, content: str, update_rate: int = 1, offset: int = 0, active: int = 0) -> tuple:
+    def draw_body(self, x: int, y: int, content: str, update_rate: int = 1, offset: int = 0, active: int = 0) -> tuple:
 
         content_disp = []
         self.call_count += 1
@@ -102,6 +103,5 @@ class Body:
             with self.term.hidden_cursor():
 
                 print(enclose_in_box(content, color=self.colors.body_color))
-
 
         return (len(content_disp), orig_content_length - len(content_disp))
