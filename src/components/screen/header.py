@@ -1,15 +1,20 @@
-from blessed import Terminal, terminal
 from boxer import enclose_in_box
+from blessed import Terminal
+from colors import Colors
 
-term = Terminal()
+class Header:
 
-@enclose_in_box(title=True, color=f"{term.pink}")
-def draw_head(content: str) -> None:
+    def __init__(self):
 
-    with term.location(0, 0):
+        self.term = Terminal()
+        self.colors = Colors()
 
-        with term.hidden_cursor():
+    def draw_head(self, x, y, content):
 
-            print(content)
+        with self.term.location(x, y):
 
-    return None
+            with self.term.hidden_cursor():
+
+                print(enclose_in_box(content, color=self.colors.header_color, title=True))
+
+        return None
