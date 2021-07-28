@@ -1,4 +1,5 @@
 from blessed import Terminal
+from blessed.formatters import resolve_attribute
 
 from .listener import Listener
 from .scraper import BookGetter, Downloader
@@ -47,8 +48,24 @@ class UI:
 
             self.textbox.draw_active_textbox(0, 3, self.textbox_str)
 
-        self.active_len, self.offsets = self.body.draw_body(
-            0, 6, self.body_content, self.update_rate, self.offset_index, self.active_index)
+        if self.response == "Get init page":
+
+            self.body_content, self.pages = self.searcher.init_search(
+                self.textbox_str)
+            self.active_page = 0
+
+        if self.response == "Get active page":
+
+            new_soup = self.searcher.make_soup(self.pages[self.active_page])
+            self.body_content = self.searcher.add_books(new_soup)
+
+        if self.response == "Download the current book":
+
+            self.downloader.redirect_to_browser(self.body_content, self.active_index, self.offset_index)
+
+        self.active_len, self.offsets = self.body.draw_body(0, 6, self.body_content, self.update_rate, self.offset_index, self.active_index)
 
         self.footer.draw_footer(0, self.term.height - 2,
                                 self.pages_len, self.active_page)
+
+        self.pages_len = len(self.pages)
