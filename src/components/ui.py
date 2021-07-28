@@ -52,7 +52,7 @@ class UI:
 
         if self.response == "Get active page":
 
-            new_soup = self.searcher.make_soup(self.pages[self.active_page])
+            new_soup = self.searcher.make_soup(self.pages[self.active_page], False)
             self.body_content = self.searcher.add_books(new_soup)
 
         if self.response == "Download the current book":
@@ -67,3 +67,4 @@ class UI:
                                 self.pages_len, self.active_page)
 
         self.pages_len = len(self.pages)
+        self.response = ""

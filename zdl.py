@@ -225,7 +225,7 @@ class process_site_content:
 
         try:
 
-            for page in range(2, int(reqd_line.split(":")[1].strip()[:-1]) + 1):
+            for page in range(1, int(reqd_line.split(":")[1].strip()[:-1]) + 1):
 
                 pages.append(f"{query_string}?page={page}")
 

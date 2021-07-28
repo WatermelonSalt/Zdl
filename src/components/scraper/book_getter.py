@@ -15,9 +15,9 @@ class BookGetter:
         self.determiner.determine_mirror()
         self.encoder = QueryEncoder(self.determiner.book_domain)
 
-    def make_soup(self, query_string):
+    def make_soup(self, query_string, replace = True):
 
-        query_string = self.encoder.encode_query(query_string)
+        query_string = self.encoder.encode_query(query_string, replace)
         book_search_page = get(query_string, headers=self.headers).content
         book_search_soup = BeautifulSoup(book_search_page, "html.parser")
 
@@ -206,7 +206,7 @@ class BookGetter:
 
         try:
 
-            for page in range(2, int(reqd_line.split(":")[1].strip()[:-1]) + 1):
+            for page in range(1, int(reqd_line.split(":")[1].strip()[:-1]) + 1):
 
                 pages.append(f"{query_string}?page={page}")
 

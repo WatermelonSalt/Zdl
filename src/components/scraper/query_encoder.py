@@ -39,12 +39,14 @@ class QueryEncoder:
         }
         self.book_domain = book_domain
 
-    def encode_query(self, query_string):
+    def encode_query(self, query_string, replace):
 
-        for key in self.symbol_dict.keys():
+        if replace:
 
-            if key in rf"{query_string}":
+            for key in self.symbol_dict.keys():
 
-                query_string = query_string.replace(key, self.symbol_dict[key])
+                if key in rf"{query_string}":
+
+                    query_string = query_string.replace(key, self.symbol_dict[key])
 
         return rf"{self.book_domain}/s/{query_string}"

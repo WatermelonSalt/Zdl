@@ -13,6 +13,8 @@ class Listener:
 
     def listen(self, x, y, textbox_active, active_index, active_page, active_len,  offset_index, offsets, page_len):
 
+        self.response = ""
+
         with term.cbreak():
 
             with term.location(x, y):
