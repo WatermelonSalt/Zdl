@@ -26,7 +26,7 @@ class UI:
         self.listen = Listener()
         self.searcher = BookGetter()
         self.downloader = Downloader()
-        self.body = Body()
+        self.body = Body(self.update_rate)
         self.footer = Footer()
         self.header = Header()
         self.textbox = TextBox()
@@ -62,7 +62,7 @@ class UI:
 
             self.downloader.redirect_to_browser(self.body_content, self.active_index, self.offset_index)
 
-        self.active_len, self.offsets = self.body.draw_body(0, 6, self.body_content, self.update_rate, self.offset_index, self.active_index)
+        self.active_len, self.offsets = self.body.draw_body(0, 6, self.body_content, self.offset_index, self.active_index)
 
         self.footer.draw_footer(0, self.term.height - 2,
                                 self.pages_len, self.active_page)

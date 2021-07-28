@@ -6,7 +6,7 @@ from .colors import Colors
 
 class Body:
 
-    def __init__(self):
+    def __init__(self, update_rate):
 
         self.colors = Colors()
         self.term = Terminal()
@@ -16,19 +16,20 @@ class Body:
         self.offset_str_call_count = 0
         self.str1_offset = 0
         self.comp_str1 = ""
+        self.update_rate = update_rate
 
-    def draw_body(self, x: int, y: int, content: str, update_rate: int = 1, offset: int = 0, active: int = 0) -> tuple:
+    def draw_body(self, x: int, y: int, content: str, offset: int = 0, active: int = 0) -> tuple:
 
         content_disp = []
         self.call_count += 1
         self.offset_str_call_count += 1
 
-        if self.call_count >= 3*((1/update_rate)/4):
+        if self.call_count >= 3*((1/self.update_rate)/4):
 
             self.call_count = 0
             self.active_offset += 1
 
-        if self.offset_str_call_count >= (1/update_rate)/4:
+        if self.offset_str_call_count >= (1/self.update_rate)/4:
 
             self.offset_str_call_count = 0
             self.str1_offset += 1
