@@ -1,5 +1,4 @@
 from blessed import Terminal
-from blessed.formatters import resolve_attribute
 
 from .listener import Listener
 from .scraper import BookGetter, Downloader
