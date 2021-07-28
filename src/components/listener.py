@@ -1,11 +1,10 @@
-from blessed import Terminal
+from .screen import term
 
 
 class Listener:
 
     def __init__(self):
 
-        self.term = Terminal()
         self.count = 0
         self.content = []
         self.tmp_content = []
@@ -14,11 +13,11 @@ class Listener:
 
     def listen(self, x, y, textbox_active, active_index, active_page, active_len,  offset_index, offsets, page_len):
 
-        with self.term.cbreak():
+        with term.cbreak():
 
-            with self.term.location(x, y):
+            with term.location(x, y):
 
-                inp = self.term.inkey(timeout=0.0)
+                inp = term.inkey(timeout=0.0)
 
                 if inp == '\2' and textbox_active is False:
 
@@ -56,9 +55,9 @@ class Listener:
 
                     self.tmp_content = self.content
 
-                    if len(self.content) > self.term.width - 4:
+                    if len(self.content) > term.width - 4:
 
-                        needed_length = len(self.content) - self.term.width + 4
+                        needed_length = len(self.content) - term.width + 4
                         self.tmp_content = self.tmp_content[needed_length:]
 
                     for letter in self.tmp_content:

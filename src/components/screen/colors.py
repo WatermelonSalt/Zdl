@@ -1,9 +1,8 @@
-from blessed import Terminal
+from .terminal import term
 
 
 class Colors:
 
-    term = Terminal()
     header_color = f"{term.pink}"
     textbox_active_color = f"{term.yellow}"
     textbox_inactive_color = f"{term.cyan}"

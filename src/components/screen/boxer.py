@@ -1,8 +1,6 @@
 from typing import Any
 
-from blessed import Terminal
-
-term = Terminal()
+from .terminal import term
 
 
 def enclose_in_box(content: list, title: bool = False, title_str: str = None, color: str = None, box_chars: tuple = ("║", "═", "╔", "╗", "╚", "╝")):

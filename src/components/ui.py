@@ -1,8 +1,6 @@
-from blessed import Terminal
-
 from .listener import Listener
 from .scraper import BookGetter, Downloader
-from .screen import Body, Footer, Header, TextBox
+from .screen import Body, Footer, Header, TextBox, term
 
 
 class UI:
@@ -30,7 +28,6 @@ class UI:
         self.footer = Footer()
         self.header = Header()
         self.textbox = TextBox()
-        self.term = Terminal()
 
     def draw_ui(self):
 
@@ -60,11 +57,13 @@ class UI:
 
         if self.response == "Download the current book":
 
-            self.downloader.redirect_to_browser(self.body_content, self.active_index, self.offset_index)
+            self.downloader.redirect_to_browser(
+                self.body_content, self.active_index, self.offset_index)
 
-        self.active_len, self.offsets = self.body.draw_body(0, 6, self.body_content, self.offset_index, self.active_index)
+        self.active_len, self.offsets = self.body.draw_body(
+            0, 6, self.body_content, self.offset_index, self.active_index)
 
-        self.footer.draw_footer(0, self.term.height - 2,
+        self.footer.draw_footer(0, term.height - 2,
                                 self.pages_len, self.active_page)
 
         self.pages_len = len(self.pages)
