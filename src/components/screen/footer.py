@@ -1,6 +1,6 @@
 from blessed import Terminal
 
-from colors import Colors
+from .colors import Colors
 
 
 class Footer:

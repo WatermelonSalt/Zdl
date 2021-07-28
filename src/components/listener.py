@@ -128,4 +128,4 @@ class Listener:
 
                         self.response = "Download the current book"
 
-        return (textbox_active, active_index, active_page, active_len, offset_index, offsets)
+        return (textbox_active, active_index, active_page, active_len, offset_index, self.response, self.textbox_str)

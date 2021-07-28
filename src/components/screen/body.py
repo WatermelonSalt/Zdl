@@ -1,7 +1,7 @@
 from blessed import Terminal
 
-from boxer import enclose_in_box
-from colors import Colors
+from .boxer import enclose_in_box
+from .colors import Colors
 
 
 class Body:

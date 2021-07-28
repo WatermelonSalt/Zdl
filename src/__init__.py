@@ -1,3 +1,3 @@
-from .components import ui
+from . import components
 
-__all__ = ["ui"]
+__all__ = ["components"]

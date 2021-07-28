@@ -2,8 +2,8 @@ from bs4 import BeautifulSoup
 from bs4.element import NavigableString
 from requests import get
 
-from mirror_det import DetermineMirror
-from query_encoder import QueryEncoder
+from .mirror_det import DetermineMirror
+from .query_encoder import QueryEncoder
 
 
 class BookGetter:
