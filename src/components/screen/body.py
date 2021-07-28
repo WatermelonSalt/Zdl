@@ -47,61 +47,59 @@ class Body:
 
         orig_content_length = len(content)
 
-        with self.term.location(0, 6), self.term.hidden_cursor():
+        if len(content) < self.term.height - 10:
 
-            if len(content) < self.term.height - 10:
+            for i in range(self.term.height - 10):
 
-                for i in range(self.term.height - 10):
+                if len(content) == self.term.height - 10:
 
-                    if len(content) == self.term.height - 10:
+                    break
 
-                        break
+                content.append("")
 
-                    content.append("")
+        if len(content) > self.term.height - 10:
 
-            if len(content) > self.term.height - 10:
+            content = content[offset: self.term.height + offset - 10]
 
-                content = content[offset: self.term.height + offset - 10]
+        for info in content:
 
-            for info in content:
+            if type(info) == list:
 
-                if type(info) == list:
-
-                    content_disp.append(info[1])
-
-                else:
-
-                    content_disp.append(info)
-
-            if type(content[active]) == list:
-
-                content_disp[active] = f"{self.term.black_on_grey}{content[active][1]}  {content[active][2 + self.active_offset]}{self.term.normal}"
+                content_disp.append(info[1])
 
             else:
 
-                content_disp[active] = f"{self.term.black_on_grey}{content[active]}{self.term.normal}"
+                content_disp.append(info)
 
-            for index, elem in enumerate(content_disp):
+        if type(content[active]) == list:
 
-                if len(elem) > self.term.width - 4:
+            content_disp[active] = f"{self.term.black_on_grey}{content[active][1]}  {content[active][2 + self.active_offset]}{self.term.normal}"
 
-                    if index == active:
+        else:
 
-                        self.comp_str1 = content[active][1]
+            content_disp[active] = f"{self.term.black_on_grey}{content[active]}{self.term.normal}"
 
-                        content_disp[active] = f"{self.term.black_on_grey}" + f"{content[active][1][self.str1_offset: self.str1_offset + 50]}  {content[active][2 + self.active_offset]}"[
-                            : self.term.width - 4] + f"{self.term.normal}"
+        for index, elem in enumerate(content_disp):
 
-                    else:
+            if len(elem) > self.term.width - 4:
 
-                        content_disp[index] = content_disp[index][:self.term.width - 4]
+                if index == active:
 
-            self.active_prev = active
+                    self.comp_str1 = content[active][1]
+
+                    content_disp[active] = f"{self.term.black_on_grey}" + f"{content[active][1][self.str1_offset: self.str1_offset + 50]}  {content[active][2 + self.active_offset]}"[
+                        : self.term.width - 4] + f"{self.term.normal}"
+
+                else:
+
+                    content_disp[index] = content_disp[index][:self.term.width - 4]
+
+        self.active_prev = active
 
         with self.term.location(x, y):
 
             with self.term.hidden_cursor():
 
-                print(enclose_in_box(content, color=self.colors.body_color))
+                print(enclose_in_box(content_disp, color=self.colors.body_color))
 
         return (len(content_disp), orig_content_length - len(content_disp))
