@@ -31,7 +31,7 @@ class Listener:
 
                 if textbox_active is True:
 
-                    if input == '\2' and self.count == 1:
+                    if inp == '\2' and self.count == 1:
 
                         textbox_active = False
 
@@ -48,11 +48,11 @@ class Listener:
 
                             pass
 
-                    if inp.is_sequence is False and input not in [
+                    if inp.is_sequence is False and inp not in [
                             "", "\x14", "\2"
                     ]:
 
-                        self.content.append(str(input))
+                        self.content.append(str(inp))
 
                     self.tmp_content = self.content
 
