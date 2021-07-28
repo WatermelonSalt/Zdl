@@ -1,5 +1,6 @@
 from webbrowser import open as browser_open
 
+
 class Downloader:
 
     def __init__(self):
