@@ -26,13 +26,13 @@ This will most likely be a pip installable package in the future updates
 
 ### What are the controls?
 
-`Ctrl + b` is used to toggle the search box
-The `Enter` key is used when the search box is active to search for the book
-`j` and `k` are used to navigate the body after the search
-`h` and `l` are used to navigate the footer after the search
-`Ctrl + h` is used to load the currently active page highlighted in the footer
-`Ctrl + m` is used to quickly load the initial page
-The `Tab` key is used to look up and download the currently selected book in the browser
+* `Ctrl + b` is used to toggle the search box
+* The `Enter` key is used when the search box is active to search for the book
+* `j` and `k` are used to navigate the body after the search
+* `h` and `l` are used to navigate the footer after the search
+* `Ctrl + h` is used to load the currently active page highlighted in the footer
+* `Ctrl + m` is used to quickly load the initial page
+* The `Tab` key is used to look up and download the currently selected book in the browser
 
 ## Contribute
 
