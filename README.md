@@ -1,3 +1,5 @@
+> ⚠ Please note that this software is outdated and has big performance issues, this is just a proof of concept
+
 # Zdl
 
 Zdl is a TUI(Textual User Interface) for the famous books download site Z-Library!
